@@ -30,7 +30,7 @@ All task endpoints use the `/api/tasks` resource. JSON responses use `{ "success
 | Method | Path | Description |
 | --- | --- | --- |
 | `GET` | `/health` | Health check |
-| `GET` | `/api/tasks` | List tasks |
+| `GET` | `/api/tasks` | List tasks (cursor paginated) |
 | `GET` | `/api/tasks/:id` | Get a task by UUID |
 | `POST` | `/api/tasks` | Create a task |
 | `PATCH` | `/api/tasks/:id` | Partially update a task |
@@ -47,6 +47,10 @@ Create-task example:
 ```
 
 `title` and `description` are required non-empty strings. `status` is optional on creation and defaults to `todo`; valid values are `todo`, `in-progress`, and `done`. Updates must contain at least one of these fields. Task IDs are UUIDs; timestamps are ISO 8601 strings.
+
+### Pagination
+
+`GET /api/tasks` accepts an optional `limit` (default `20`, maximum `100`) and an opaque `cursor`. Results are newest first. The response includes `data`, `nextCursor`, and `hasMore`; pass a non-null `nextCursor` as the next request's `cursor`.
 
 ## Persistence
 
